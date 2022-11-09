@@ -5,30 +5,45 @@ import * as config from "@assetmantle/mantlejs/build/config.json";
 
 
 
- export default class queryIdentities extends AssetMantle{
+//  export default class queryIdentities extends AssetMantle{
 
     
-    queryIdentities= async ()  => {
-        let path = this.path;
-        let option = {
-            method: "GET",
-            url: path+config.queryIdentityPath,
-            headers:{}
-        };
-        return new Promise(function (resolve,reject){
-            Request(option, async function () {
-               if (error) {
-                   reject(error);
-               }
-               let result = JSON.parse(res.body);
-               let list = result.result.value.identies.value.list;
-               resolve(list);
-           });
-       }).catch(function (error){
-           console.log("promise rejected: ",error);
-           return error;
-       });
-    };
+//     queryIdentities= async ()  => {
+//         let path = this.path;
+//         let option = {
+//             method: "GET",
+//             url: path+config.queryIdentityPath,
+//             headers:{}
+//         };
+//         return new Promise(function (resolve,reject){
+//             Request(option, async function () {
+//                if (error) {
+//                    reject(error);
+//                }
+//                let result = JSON.parse(res.body);
+//                let list = result.result.value.identies.value.list;
+//                resolve(list);
+//            });
+//        }).catch(function (error){
+//            console.log("promise rejected: ",error);
+//            return error;
+//        });
+//     };
 
    
- }
+//  }
+
+async function nub(
+    address,
+    chain_id,
+    mnemonic,
+    nubID,
+    fee,
+    token,
+    gas,
+    mode,
+  ) {
+    return new Promise(async function (resolve) {
+      let result = await identityNub.nub(address, chain_id, mnemonic, nubID, fee, token, gas, mode, "");
+      resolve(result);
+    })}
