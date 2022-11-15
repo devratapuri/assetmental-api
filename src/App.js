@@ -1,4 +1,5 @@
 import './App.css';
+
 import { queryIdentities } from "@assetmantle/mantlejs/build/transaction/identity/query";
 import config from "@assetmantle/mantlejs/build/config.json"
 import { checkRawLog, FindInResponse } from "@assetmantle/mantlejs/build/helpers/helper";
@@ -10,6 +11,9 @@ import { defineAsset } from "@assetmantle/mantlejs/build/transaction/assets/defi
 import { nubIdentity } from "@assetmantle/mantlejs/build/transaction/identity/nub";
 import { defineIdentity } from "@assetmantle/mantlejs/build/transaction/identity/define";
 import { issueIdentity } from "@assetmantle/mantlejs/build/transaction/identity/issue";
+import getBase64 from 'getbase64data'
+import base64 from 'base-64';
+import utf8 from 'utf8';
 
 function App() {
   //http://23.88.102.13:1317
@@ -35,7 +39,6 @@ function App() {
   async function nub(
     address,
     chain_id,
-    mnemonic,
     nubID,
     fee,
     token,
@@ -43,7 +46,7 @@ function App() {
     mode,
   ) {
     return new Promise(async function (resolve) {
-      let result = await identityNub.nub(address, chain_id, mnemonic, nubID, fee, token, gas, mode, "");
+      let result = await identityNub.createIdentityNubMsg(address, chain_id, nubID, fee, token, gas, mode, "");
       resolve(result);
     })
   }
@@ -62,7 +65,6 @@ function App() {
     let result = await nub(
       wallet.address,
       config.chain_id,
-      mnemonic,
       config.nubID,
       0,
       "stake",
@@ -70,16 +72,16 @@ function App() {
       "block",
     );
     console.log("nub function executed");
-    console.log(result);
+    console.log(result.toString());
     let _res = JSON.parse(JSON.stringify(result));
-    console.log(_res);
+    //console.log(_res);
     let check = await checkRawLog(_res.rawLog);
-    console.log(check);
-    if (check) {
-      console.log("\n\n**TX HASH for nub** :" + _res.transactionHash);
-    } else {
-      console.log("\n\n**TX failed for nub** :" + _res.rawLog);
-    }
+    //console.log(check);
+    // if (check) {
+    //   console.log("\n\n**TX HASH for nub** :" + _res.transactionHash);
+    // } else {
+    //   console.log("\n\n**TX failed for nub** :" + _res.rawLog);
+    // }
   }
 
 
@@ -92,23 +94,28 @@ function App() {
     let clsID = listResponse.classificationID + "|" + listResponse.hashID;
     console.log("clsid" + "= " + clsID);
 
-    // let res = await identityDefine.define(
-    //   wallet.address,
-    //   config.chain_id,
-    //   mnemonic,
-    //   clsID,
-    //   "mutableProperties111:S|identity11543",
-    //   "immutableProperties:S|identity22662",
-    //   "mutableMetaProperties:S|identity34167",
-    //   "immutableMetaProperties:S|identity45648",
-    //   25,
-    //   "stake",
-    //   200000,
-    //   "block",
-    //   "",
-    // );
+    let res = await identityDefine.define(
+      wallet.address,
+      config.chain_id,
+      mnemonic,
+      clsID,
+      "mutableProperties111:S|identity11543",
+      "immutableProperties:S|identity22662",
+      "mutableMetaProperties:S|identity34167",
+      "immutableMetaProperties:S|identity45648",
+      25,
+      "stake",
+      200000,
+      "block",
+      "",
+    );
 
-    // console.log(res);
+    let check = await checkRawLog(res.rawLog);
+    if (check) {
+      console.log("\n\n**TX HASH for define identity 2** :" + res.transactionHash);
+    } else {
+      console.log("\n\n**TX failed for define identity 2** :" + res.rawLog);
+    }
 
     return clsID;
 
@@ -155,9 +162,10 @@ function App() {
 
     let wallet = await createWallet(userGivenMnemonic, "");
     let results = await identityQuery.queryIdentity();
-    let listResponse = await FindInResponse("identities", results, "immutableMetaProperties");
-    let identityID1 = listResponse.classificationID + "|" + listResponse.hashID;
-
+    console.log(results);
+    // let listResponse = await FindInResponse("identities", results, "immutableMetaProperties");
+    // let identityID1 = listResponse.classificationID + "|" + listResponse.hashID;
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|zyNTTODac3l6Qz8-Z0V5PMkT4Gk="
     console.log(identityID1);
 
    let res = await assetDefine.define(
@@ -181,30 +189,67 @@ function App() {
   }
 
   const mintAsset1 = async () => {
+    
+    let assetClsID = "devnet-mantle-1.j0Uuu1ZA7krYEQ036oQVnzmkQVs="
+    //console.log(assetClsID)
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|aAUYDVGMcWoh2eYUIoya1HsbOgM="
+    // console.log(identityID1);
 
-    let wallet = await createWallet(userGivenMnemonic, "");
-    let results = await clsQuery.queryClassification();
-    let listResponse = await FindInResponse("classifications", results, "ASSET4");
-    let assetClsID = listResponse.chainID + "." + listResponse.hashID;
-    let identityID1 = defineAsset1();
+    const name = "Mirage";
+    const name64 = utf8.encode(name);
+    const imageURL = "https://149695847.v2.pressablecdn.com/wp-content/uploads/2022/02/Met-s-b_11zon.jpg";
+    const imageURL64 = utf8.encode(imageURL);
+    const desc = "Nothing";
+    const desc64 = utf8.encode(desc);
+    const propertiesArray = ["Anything"];
+    const propertiesArray64 = utf8.encode(propertiesArray[0]);
+    const mnemonic1 = "address museum grab dove nominee palace hamster segment wrist light also modify"
 
     let res = await assetMint.mint(
-      wallet.address,
+      "mantle16qczacumv2dkkx252xqj4fsfxlyev3s3wu5939",
       config.chain_id,
-      mnemonic,
+      mnemonic1,
       identityID1,
       identityID1,
       assetClsID,
-      "ASSET1:S|num1,burn:H|1",
-      "ASSET2:S|num2",
-      "ASSET3:S|num3",
-      "ASSET4:S|num4",
-      25,
-      "stake",
-      200000,
+      "burn:H|1,lock:H|1",
+      "color:S|Blue",
+      `propertyName:S|${base64.encode(
+          JSON.stringify(propertiesArray64)
+        )},type:S|asset`,
+      `URI:S|${base64.encode(imageURL64)},name:S|${base64.encode(
+        name64
+      )},description:S|${base64.encode(desc64)},category:S|ZCB0cw`,
+      0,
+      "umnt1",
+      "400000",
       "block",
-      "",
+      "sync",
     );
+
+    // {
+    //   type: "/xprt/assets/mint/request",
+    //   value: {
+    //     baseReq: {
+    //       from: walletId,
+    //       chain_id: "devnet-mantle-1",
+    //       memo: "sync",
+    //       fees: [{ amount: "0", denom: "umntl" }],
+    //       gas: "400000",
+    //     },
+    //     toID: nubID,
+    //     fromID: nubID,
+    //     classificationID: "devnet-mantle-1.j0Uuu1ZA7krYEQ036oQVnzmkQVs=",
+    //     mutableProperties: "burn:H|1,lock:H|1",
+    //     immutableProperties: "color:S|Blue",
+    //     mutableMetaProperties: `propertyName:S|${getBase64(
+    //       JSON.stringify(propertiesArray)
+    //     )},type:S|asset`,
+    //     immutableMetaProperties: `URI:S|${getBase64(imageURL)},name:S|${getBase64(
+    //       name
+    //     )},description:S|${getBase64(desc)},category:S|ZCB0cw`,
+    //   },
+    // };
 
     console.log(res)
   }
