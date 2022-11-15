@@ -34,6 +34,33 @@ function App() {
   let userGivenMnemonic =
     "wage thunder live sense resemble foil apple course spin horse glass mansion midnight laundry acoustic rhythm loan scale talent push green direct brick please";
 
+window.onload = async () => {
+    if (!window.keplr) {
+        alert("Please install keplr extension");
+    } else {
+        const chainId = "cosmoshub-4";
+
+        // Enabling before using the Keplr is recommended.
+        // This method will ask the user whether to allow access if they haven't visited this website.
+        // Also, it will request that the user unlock the wallet if the wallet is locked.
+        await window.keplr.enable(chainId);
+
+        const offlineSigner = window.keplr.getOfflineSigner(chainId);
+
+        // You can get the address/public keys by `getAccounts` method.
+        // It can return the array of address/public key.
+        // But, currently, Keplr extension manages only one address/public key pair.
+        // XXX: This line is needed to set the sender address for SigningCosmosClient.
+        const accounts = await offlineSigner.getAccounts();
+
+        // Initialize the gaia api with the offline signer that is injected by Keplr extension.
+        const cosmJS = new SigningCosmosClient(
+            "https://lcd-cosmoshub.keplr.app",
+            accounts[0].address,
+            offlineSigner,
+        );
+    }
+}
 
 
   async function nub(
@@ -52,7 +79,7 @@ function App() {
   }
 
   const query = async () => {
-    
+
     const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
     const identity = await queryIdentitiesControllerObj.queryIdentityWithID("-2liw_QnWqaWZUv1QIfaEW__BHc=")
     console.log(identity);
@@ -124,7 +151,7 @@ function App() {
   const issueId = async () => {
 
     let wallet = await createWallet(userGivenMnemonic, "");
-    
+
     let results = await clsQuery.queryClassification();
     console.log(results);
     // let clsID = await defineId();
@@ -134,7 +161,7 @@ function App() {
     let classificationID = listResponse.chainID + "." + listResponse.hashID;
     console.log(classificationID);
 
-    
+
 
     // let res = await identityIssue.issue(
     //   wallet.address,
