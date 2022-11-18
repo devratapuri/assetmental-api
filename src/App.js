@@ -11,7 +11,7 @@ import { defineAsset } from "@assetmantle/mantlejs/build/transaction/assets/defi
 import { nubIdentity } from "@assetmantle/mantlejs/build/transaction/identity/nub";
 import { defineIdentity } from "@assetmantle/mantlejs/build/transaction/identity/define";
 import { issueIdentity } from "@assetmantle/mantlejs/build/transaction/identity/issue";
-import getBase64 from 'getbase64data'
+import { provisionIdentity } from "@assetmantle/mantlejs/build/transaction/identity/provision";
 import base64 from 'base-64';
 import utf8 from 'utf8';
 
@@ -27,6 +27,7 @@ function App() {
   const identityNub = new nubIdentity(url);
   const identityDefine = new defineIdentity(url);
   const identityIssue = new issueIdentity(url);
+  const identityProvision = new provisionIdentity(url);
 
   const mnemonic =
     "wage thunder live sense resemble foil apple course spin horse glass mansion midnight laundry acoustic rhythm loan scale talent push green direct brick please";
@@ -54,11 +55,11 @@ window.onload = async () => {
         const accounts = await offlineSigner.getAccounts();
 
         // Initialize the gaia api with the offline signer that is injected by Keplr extension.
-        const cosmJS = new SigningCosmosClient(
-            "https://lcd-cosmoshub.keplr.app",
-            accounts[0].address,
-            offlineSigner,
-        );
+        // const cosmJS = new SigningCosmosClient(
+        //     "https://lcd-cosmoshub.keplr.app",
+        //     accounts[0].address,
+        //     offlineSigner,
+        // );
     }
 }
 
@@ -81,7 +82,7 @@ window.onload = async () => {
   const query = async () => {
 
     const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
-    const identity = await queryIdentitiesControllerObj.queryIdentityWithID("-2liw_QnWqaWZUv1QIfaEW__BHc=")
+    const identity = await queryIdentitiesControllerObj.queryIdentityWithID("devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|aAUYDVGMcWoh2eYUIoya1HsbOgM=")
     console.log(identity);
   }
 
@@ -185,41 +186,92 @@ window.onload = async () => {
 
   }
 
-  const defineAsset1 = async () => {
+  const provisionId1 = async () => {
+   
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|aAUYDVGMcWoh2eYUIoya1HsbOgM="
+    const mnemonic1 = "address museum grab dove nominee palace hamster segment wrist light also modify"
+    let randomWallet = await createRandomWallet("");
+    console.log(randomWallet.address);
+    console.log(randomWallet.mnemonic);
 
-    let wallet = await createWallet(userGivenMnemonic, "");
-    let results = await identityQuery.queryIdentity();
-    console.log(results);
-    // let listResponse = await FindInResponse("identities", results, "immutableMetaProperties");
-    // let identityID1 = listResponse.classificationID + "|" + listResponse.hashID;
-    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|zyNTTODac3l6Qz8-Z0V5PMkT4Gk="
-    console.log(identityID1);
-
-   let res = await assetDefine.define(
-      wallet.address,
+    let res = await identityProvision.provision(
+      "mantle16qczacumv2dkkx252xqj4fsfxlyev3s3wu5939",
       config.chain_id,
-      mnemonic,
+      mnemonic1,
       identityID1,
-      "ASSET1:S|num1,burn:H|1",
-      "ASSET2:S|",
-      "ASSET3:S|num3",
-      "ASSET4:S|num4",
-      25,
+      randomWallet.address,
+      0,
       "stake",
       200000,
       "block",
       "",
     );
 
+    
     console.log(res);
+    return (randomWallet);
+
+  }
+
+  const defineAsset1 = async () => {
+
+    // let wallet = await createWallet(userGivenMnemonic, "");
+    // let results = await identityQuery.queryIdentity();
+    // console.log(results);
+    // let listResponse = await FindInResponse("identities", results, "immutableMetaProperties");
+    // let identityID1 = listResponse.classificationID + "|" + listResponse.hashID;
+
+    const name = "Avatar";
+    const name64 = utf8.encode(name);
+    const imageURL = "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg";
+    const imageURL64 = utf8.encode(imageURL);
+    const desc = "3D avatar";
+    const desc64 = utf8.encode(desc);
+    const propertiesArray = ["Kuchbhi"];
+    const propertiesArray64 = utf8.encode(propertiesArray[0]);
+
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|nvW7zJXoux-ScWNYsXh8iC8SkLc="
+    console.log(identityID1);
+    const mnemonic1 = "moral neither potato earn solar lamp calm insane blouse blush nose field"
+
+   let res = await assetDefine.define(
+    "mantle1607j9pgz6ydx468qlusvgcllnrxx3sll0ahhwe",
+    config.chain_id,
+    mnemonic1,
+    identityID1,
+    "ASSET1:S|num1,burn:H|1",
+    "ASSET2:S|num2",
+    "ASSET3:S|num3",
+    "ASSET4:S|num4",
+    1,
+    "umntl",
+    "400000",
+    "block",
+    "",
+    );
+
+    console.log(res);
+
+    // check = await checkRawLog(res.rawLog);
+    // if (check) {
+    //   console.log("\n\n**TX HASH for define assets** :" + res.transactionHash);
+    // } else {
+    //   console.log("\n\n**TX failed for define assets** :" + res.rawLog);
+    // }
+
+    let results = await clsQuery.queryClassification();
+    console.log(results);
+    let listResponse = await FindInResponse("classifications", results, "ASSET4");
+    let assetClsID = listResponse.chainID + "." + listResponse.hashID;
+    console.log(assetClsID);
 
   }
 
   const mintAsset1 = async () => {
-    
-    let assetClsID = "devnet-mantle-1.j0Uuu1ZA7krYEQ036oQVnzmkQVs="
+
+    let assetClsID = "devnet-mantle-1.JaCsWOJ6pAiublJ8KUb8GxPJcmA="
     //console.log(assetClsID)
-    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|aAUYDVGMcWoh2eYUIoya1HsbOgM="
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|nvW7zJXoux-ScWNYsXh8iC8SkLc="
     // console.log(identityID1);
 
     const name = "Mirage";
@@ -230,10 +282,11 @@ window.onload = async () => {
     const desc64 = utf8.encode(desc);
     const propertiesArray = ["Anything"];
     const propertiesArray64 = utf8.encode(propertiesArray[0]);
-    const mnemonic1 = "address museum grab dove nominee palace hamster segment wrist light also modify"
+    const mnemonic1 = "moral neither potato earn solar lamp calm insane blouse blush nose field"
+    // let waddress = await provisionId1();
 
     let res = await assetMint.mint(
-      "mantle16qczacumv2dkkx252xqj4fsfxlyev3s3wu5939",
+      "mantle1607j9pgz6ydx468qlusvgcllnrxx3sll0ahhwe",
       config.chain_id,
       mnemonic1,
       identityID1,
@@ -248,7 +301,7 @@ window.onload = async () => {
         name64
       )},description:S|${base64.encode(desc64)},category:S|ZCB0cw`,
       0,
-      "umnt1",
+      "umntl",
       "400000",
       "block",
       "sync",
@@ -293,6 +346,8 @@ window.onload = async () => {
         <button onClick={issueId}>Issue Id</button>
         <br></br>
         <button onClick={defineAsset1}>Define Asset</button>
+        <br></br>
+        <button onClick={provisionId1}>Provision Id</button>
         <br></br>
         <button onClick={mintAsset1}>Mint Asset</button>
         <br></br>
