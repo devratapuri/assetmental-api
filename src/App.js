@@ -45,9 +45,9 @@ function App() {
   // updated values
   let userGivenMnemonic =
     "moral neither potato earn solar lamp calm insane blouse blush nose field";
-  let username = "username1";
-  let identityImmutables = "immutablePropertiesa836:S|identity22846";
-  let assetImmutables = "ASSET101:S|num22";
+  let username ="username2";
+  let identityImmutables = "immutablePropertiesa836:S|identity22847";
+  let assetImmutables = "ASSET101:S|num23";
 
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";

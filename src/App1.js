@@ -45,9 +45,9 @@ function App() {
   // updated values
   let userGivenMnemonic =
     "moral neither potato earn solar lamp calm insane blouse blush nose field";
-  let username = "username1";
-  let identityImmutables = "immutablePropertiesa836:S|identity22846";
-  let assetImmutables = "ASSET101:S|num22";
+  let username = "username3";
+  let identityImmutables = "immutablePropertiesa836:S|identity22848";
+  let assetImmutables = "ASSET101:S|num24";
 
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
@@ -140,9 +140,8 @@ function App() {
     let listResponse = await FindInResponse("identities", results, username);
     let clsID = listResponse.classificationID + "|" + listResponse.hashID;
     console.log("clsid" + "= " + clsID); */
-
     let clsID = getIdFromUsername(username);
-
+    console.log("clsId is "+clsID);
     let res = await identityDefine.define(
       wallet.address,
       config.chain_id,
@@ -158,17 +157,17 @@ function App() {
       "sync",
       ""
     );
+    console.log(res);
+    // let check = await checkRawLog(res.rawLog);
+    // if (check) {
+    //   console.log(
+    //     "\n\n**TX HASH for define identity 2** :" + res.transactionHash
+    //   );
+    // } else {
+    //   console.log("\n\n**TX failed for define identity 2** :" + res.rawLog);
+    // }
 
-    let check = await checkRawLog(res.rawLog);
-    if (check) {
-      console.log(
-        "\n\n**TX HASH for define identity 2** :" + res.transactionHash
-      );
-    } else {
-      console.log("\n\n**TX failed for define identity 2** :" + res.rawLog);
-    }
-
-    return clsID;
+    // return clsID;
   };
 
   const issueId = async () => {
@@ -178,20 +177,20 @@ function App() {
       getIdFromUsername(username)
     );
     console.log(results);
-    /* 
-    let listResponse = await FindInResponse(
-      "classifications",
-      results,
-      "immutableMetaProperties"
-    );
-    console.log(listResponse + "kuch");
-    let classificationID = listResponse.chainID + "." + listResponse.hashID;
+    
+    // let listResponse = await FindInResponse(
+    //   "classifications",
+    //   results,
+    //   "immutableMetaProperties"
+    // );
+    let clsID = getIdFromUsername(username);
+    let classificationID = "devnet-mantle-1" + "." + "x9shyWyhnRKsWv6HLpFcu6t88R0=";
     console.log(classificationID);
 
     let res = await identityIssue.issue(
       wallet.address,
       config.chain_id,
-      mnemonic,
+      userGivenMnemonic,
       config.testAccountAddress,
       clsID,
       classificationID,
@@ -204,9 +203,9 @@ function App() {
       200000,
       "block",
       ""
-    ); */
+    );
 
-    // console.log(res);
+     console.log(res);
   };
 
   const provisionId1 = async () => {
@@ -236,7 +235,7 @@ function App() {
   };
 
   const defineAsset1 = async () => {
-    // let wallet = await createWallet(userGivenMnemonic, "");
+     let wallet = await createWallet(userGivenMnemonic, "");
     // let results = await identityQuery.queryIdentity();
     // console.log(results);
     // let listResponse = await FindInResponse("identities", results, "immutableMetaProperties");
@@ -253,15 +252,15 @@ function App() {
     const propertiesArray64 = utf8.encode(propertiesArray[0]);
 
     let identityID1 =
-      "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|nvW7zJXoux-ScWNYsXh8iC8SkLc=";
+    getIdFromUsername(username);
     console.log(identityID1);
     const mnemonic1 =
       "moral neither potato earn solar lamp calm insane blouse blush nose field";
 
     let res = await assetDefine.define(
-      "mantle1607j9pgz6ydx468qlusvgcllnrxx3sll0ahhwe",
+      wallet.address,
       config.chain_id,
-      mnemonic1,
+      userGivenMnemonic,
       identityID1,
       "ASSET100:S|num1,burn:H|1",
       assetImmutables,
@@ -274,7 +273,7 @@ function App() {
       ""
     );
 
-    console.log(res);
+    // console.log(res);
 
     // check = await checkRawLog(res.rawLog);
     // if (check) {
@@ -290,50 +289,50 @@ function App() {
       results,
       "ASSET4"
     );
-    let assetClsID = listResponse.chainID + "." + listResponse.hashID;
-    console.log(assetClsID);
+    console.log(results);
+
+    // let assetClsID = listResponse.chainID + "." + listResponse.hashID;
+    // console.log(assetClsID);
   };
 
   const mintAsset1 = async () => {
-    let assetClsID = "devnet-mantle-1.JaCsWOJ6pAiublJ8KUb8GxPJcmA=";
+    let wallet = await createWallet(userGivenMnemonic, "");
+    console.log(wallet.address);
+    let assetClsID = "devnet-mantle-1.PARjTlGS9t3Mtz9W8VazyxGfqtY=";
     //console.log(assetClsID)
     let identityID1 =
-      "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|nvW7zJXoux-ScWNYsXh8iC8SkLc=";
+    getIdFromUsername(username);
     // console.log(identityID1);
 
-    const name = "Mirage";
+    const name = "Avatar";
     const name64 = utf8.encode(name);
     const imageURL =
-      "https://149695847.v2.pressablecdn.com/wp-content/uploads/2022/02/Met-s-b_11zon.jpg";
+      "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg";
     const imageURL64 = utf8.encode(imageURL);
-    const desc = "Nothing";
+    const desc = "3D avatar";
     const desc64 = utf8.encode(desc);
-    const propertiesArray = ["Anything"];
+    const propertiesArray = ["Kuchbhi"];
     const propertiesArray64 = utf8.encode(propertiesArray[0]);
     const mnemonic1 =
       "moral neither potato earn solar lamp calm insane blouse blush nose field";
     // let waddress = await provisionId1();
 
     let res = await assetMint.mint(
-      "mantle1607j9pgz6ydx468qlusvgcllnrxx3sll0ahhwe",
+      wallet.address,
       config.chain_id,
-      mnemonic1,
+      userGivenMnemonic,
       identityID1,
       identityID1,
       assetClsID,
-      "burn:H|1,lock:H|1",
-      "color:S|Blue",
-      `propertyName:S|${base64.encode(
-        JSON.stringify(propertiesArray64)
-      )},type:S|asset`,
-      `URI:S|${base64.encode(imageURL64)},name:S|${base64.encode(
-        name64
-      )},description:S|${base64.encode(desc64)},category:S|ZCB0cw`,
-      0,
+      "ASSET100:S|num1,burn:H|1",
+      assetImmutables,
+      "ASSET102:S|num333",
+      "ASSET103:S|num46",
+      1,
       "umntl",
       "400000",
       "block",
-      "sync"
+      ""
     );
 
     // {
