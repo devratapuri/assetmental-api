@@ -39,32 +39,20 @@ function App() {
   let userGivenMnemonic =
     "bracket oven album lawn funny faint unfold ripple label thunder century become fiber suffer typical candy drill water remind cactus orbit scan spy cook";
 
-    const name = "Avatar";
-    //   const name64 = utf8.encode(name);
-      const imageURL =
-        "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg";
-    //   const imageURL64 = utf8.encode(imageURL);
-      const desc = "3D avatar";
-    //   const desc64 = utf8.encode(desc);
-      const propertiesArray = ["Kuchbhi"];
-    //   const propertiesArray64 = utf8.encode(propertiesArray[0]);
-
   // set values (change them if restarting all tests from the beginning)
-  let username = "randomeusername4";
+  let username = "randomeusername2";
   let identityImmutables =
-    "traitImmutable000:S|string2948, traitImmutable111:S|";
+    "traitImmutable266:S|string2948, traitImmutable267:S|";
   let identityMetaImmutables =
-    "traitMetaImmutable222:S|string96548, traitMetaImmutable333:S|";
-  let assetImmutables = "color:S|Blue";
+    "traitMetaImmutable356:S|string96548, traitMetaImmutable357:S|";
+  let assetImmutables = "Name1:S|";
   let assetMetaImmutables =
-  `URI:S|${(imageURL)},name:S|${(
-          name
-        )},description:S|${(desc)},category:S|ZCB0cw`;
+    "URI1:S|";
 
-  let stringIdentityImmutables = "string0000"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
-  let stringIdentityMetaImmutables = "string1111"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
-  let stringAssetImmutables = "Blue"; // change this value if you are going to re-run mintAsset() to create a new nft
-  let stringAssetMetaImmutables = "Luffy"; // change this value if you are going to re-run mintAsset() to create a new nft
+  let stringIdentityImmutables = "string2949"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
+  let stringIdentityMetaImmutables = "string96549"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
+  let stringAssetImmutables = "Avatar"; // change this value if you are going to re-run mintAsset() to create a new nft
+  let stringAssetMetaImmutables = "https://schoollisting-cms.s3.ap-south-1.amazonaws.com/Base_Character.gltf"; // change this value if you are going to re-run mintAsset() to create a new nft
 
   // static values (no need to change them for every iteration of test)
   let identityMutables =
@@ -72,11 +60,9 @@ function App() {
   let identityMetaMutables =
     "traitMetaMutableIdentity499:S|string945, traitMetaMutableIdentity500:S|"; // change this for multiple issueIdentities calls
   let assetMutables =
-    "burn:H|1,lock:H|1";
+    "traitMutableasset48:S|string7258, traitMutableasset49:S|";
   let assetMetaMutables =
-  `propertyName:S|${(
-          JSON.stringify(propertiesArray)
-        )},type:S|asset`;    // change this for multiple mintAsset calls
+    "traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
 
   let stringIdentityMutables = "string541";
   let stringIdentityMetaMutables = "string946";
@@ -86,16 +72,16 @@ function App() {
   // CHANGE THESE VALUES EVERYTIME YOU EXECUTE defineIdentity(), issueIdentity, defineAsset() or mintAsset. ELSE THE NEXT FUNCTION WILL FAIL.
   // after doing defineIdentity, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Identity
   let generatedIdentityClassificationID =
-    "devnet-mantle-1.IJJrWzU--5VbcvpI5tX-zMrLibM=";
+  "devnet-mantle-1.IJJrWzU--5VbcvpI5tX-zMrLibM=";
   // after doing issueIdentity, search in the REST api (/xprt/identities/identities/all) for a specific classification ID of identity to find the identity's HashID
   let identityHashID = "L1lCsaHBnr7-PKX7QNA1XIWu7FQ=";
   let generatedIdentity =
     generatedIdentityClassificationID + "|" + identityHashID;
   // after doing defineAsset, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Asset
   let generatedAssetClassificationID =
-    "devnet-mantle-1.ihb0HiZA3EZTfuExuyXQ4bq9SCM=";
+    "devnet-mantle-1.cXA8mJKPfbssK-PgvoiRlyIiqR0=";
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
-  let assetHashID = "Y5jpGkkgMykKIjcFZVXnbdl1abQ=";
+  let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
   let generatedAsset = generatedAssetClassificationID + "|" + assetHashID;
 
   // routine to generate Identity ID from username
@@ -223,28 +209,6 @@ function App() {
       "block",
       ""
     );
-
-    // (
-    //     "mantle1607j9pgz6ydx468qlusvgcllnrxx3sll0ahhwe",
-    //     config.chain_id,
-    //     mnemonic1,
-    //     identityID1,
-    //     identityID1,
-    //     assetClsID,
-    //     "burn:H|1,lock:H|1",
-    //     "color:S|Blue",
-    //     `propertyName:S|${base64.encode(
-    //       JSON.stringify(propertiesArray64)
-    //     )},type:S|asset`,
-    //     `URI:S|${base64.encode(imageURL64)},name:S|${base64.encode(
-    //       name64
-    //     )},description:S|${base64.encode(desc64)},category:S|ZCB0cw`,
-    //     0,
-    //     "umntl",
-    //     "400000",
-    //     "block",
-    //     "sync"
-    //   )
 
     console.log("Transaction Response: ", res);
 
