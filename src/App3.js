@@ -18,6 +18,7 @@ import {
 } from "@assetmantle/mantlejs/build/utilities/keys";
 import base64url from "base64url";
 import sha1 from "js-sha1";
+import { useState } from "react";
 
 function App() {
   let url = config.TENDERMINT_REST_URL;
@@ -32,6 +33,13 @@ function App() {
   const identityIssue = new issueIdentity(url);
   const identityProvision = new provisionIdentity(url);
 
+  const [username, setUsername] = useState('');
+
+  const handleChange = event => {
+    setUsername(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
   // HARDCODED VALUES
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
@@ -40,7 +48,7 @@ function App() {
     "bracket oven album lawn funny faint unfold ripple label thunder century become fiber suffer typical candy drill water remind cactus orbit scan spy cook";
 
   // set values (change them if restarting all tests from the beginning)
-  let username = "randomeusername2";
+  // let username = "randomeusername2";
   let identityImmutables =
     "traitImmutable266:S|string2948, traitImmutable267:S|";
   let identityMetaImmutables =
@@ -284,6 +292,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <input type="text" class="form-control" placeholder="Enter UserName" name="text" onChange={handleChange} value={username} />
+        <br></br>
         <button onClick={() => handleCreateNubID(username)}>NubId</button>
         <br></br>
         <button
