@@ -35,9 +35,15 @@ function App() {
 
   const [username, setUsername] = useState('');
   const [getasset, setGetasset] = useState();
+  const [assetClassificationID, setAssetClassificationID] = useState('');
 
   const handleChange = event => {
     setUsername(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handleassetID = event => {
+    setAssetClassificationID(event.target.value);
 
     console.log('value is:', event.target.value);
   };
@@ -49,47 +55,54 @@ function App() {
     "bracket oven album lawn funny faint unfold ripple label thunder century become fiber suffer typical candy drill water remind cactus orbit scan spy cook";
 
   // set values (change them if restarting all tests from the beginning)
-  // let username = "randomeusername2";
+
+
+  //Immutable properties of the Identity for Defining
   let identityImmutables =
     "traitImmutable266:S|string2948, traitImmutable267:S|";
   let identityMetaImmutables =
     "traitMetaImmutable356:S|string96548, traitMetaImmutable357:S|";
-  let assetImmutables = "Name1:S|";
-  let assetMetaImmutables =
-    "URI1:S|";
-
+    //Immutable Properties for the Identity for Setting
   let stringIdentityImmutables = "string2949"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
   let stringIdentityMetaImmutables = "string96549"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
-  let stringAssetImmutables = "Avatar"; // change this value if you are going to re-run mintAsset() to create a new nft
-  let stringAssetMetaImmutables = "https://schoollisting-cms.s3.ap-south-1.amazonaws.com/Base_Character.gltf"; // change this value if you are going to re-run mintAsset() to create a new nft
-
-  // static values (no need to change them for every iteration of test)
+  // Mutable properties of the Identity for Defining
   let identityMutables =
     "traitMutableIdentity468:S|string540, traitMutableIdentity469:S|"; // change this for multiple issueIdentities calls ?
   let identityMetaMutables =
     "traitMetaMutableIdentity499:S|string945, traitMetaMutableIdentity500:S|"; // change this for multiple issueIdentities calls
-  let assetMutables =
-    "traitMutableasset48:S|string7258, traitMutableasset49:S|";
-  let assetMetaMutables =
-    "traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
+    //Immutable Properties for the Identity for Setting
+    let stringIdentityMutables = "string541";
+    let stringIdentityMetaMutables = "string946";
 
-  let stringIdentityMutables = "string541";
-  let stringIdentityMetaMutables = "string946";
+
+  //Immutable properties of the asset for Defining
+  let assetImmutables = "Name2:S|";
+  let assetMetaImmutables ="URI2:S|";
+  //Immutable Properties for the asset for Setting
+  let stringAssetImmutables = "Name of the asset"; // change this value if you are going to re-run mintAsset() to create a new nft
+  let stringAssetMetaImmutables = "Link for the image of NFT"; // change this value if you are going to re-run mintAsset() to create a new nft
+
+  // Mutable properties of the asset for Defining
+  let assetMutables ="traitMutableasset48:S|string7258, traitMutableasset49:S|";
+  let assetMetaMutables ="traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
+
+ //Immutable Properties for the asset for Setting
   let stringAssetMutables = "string72597259";
   let stringAssetMetaMutables = "string84498449";
+
 
   // CHANGE THESE VALUES EVERYTIME YOU EXECUTE defineIdentity(), issueIdentity, defineAsset() or mintAsset. ELSE THE NEXT FUNCTION WILL FAIL.
   // after doing defineIdentity, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Identity
   let generatedIdentityClassificationID =
-  "devnet-mantle-1.IJJrWzU--5VbcvpI5tX-zMrLibM=";
+    "devnet-mantle-1.IJJrWzU--5VbcvpI5tX-zMrLibM=";
   // after doing issueIdentity, search in the REST api (/xprt/identities/identities/all) for a specific classification ID of identity to find the identity's HashID
   let identityHashID = "L1lCsaHBnr7-PKX7QNA1XIWu7FQ=";
   let generatedIdentity =
     generatedIdentityClassificationID + "|" + identityHashID;
   // after doing defineAsset, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Asset
-  let generatedAssetClassificationID =
-    "devnet-mantle-1.cXA8mJKPfbssK-PgvoiRlyIiqR0=";
+  
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
+  
   let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
   let generatedAsset = generatedAssetClassificationID + "|" + assetHashID;
 
@@ -196,6 +209,7 @@ function App() {
     );
 
     console.log("Transaction Response: ", res);
+    alert("Transaction Response: ", res.txHash);
   };
 
   const handleDefineAsset = async (definerIdentity) => {
@@ -220,6 +234,7 @@ function App() {
     );
 
     console.log("Transaction Response: ", res);
+    alert(res.txhash);
 
     /* let listResponse = await FindInResponse(
       "classifications",
@@ -255,14 +270,15 @@ function App() {
       ""
     );
 
-    console.log("Transaction Response: ", res);
+    console.log("Transaction Response: ", res.txhash);
+    alert(res.txhash);
   };
 
   const handleQueryAsset = async (assetID) => {
     // const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
     console.log("ID of Asset to be queried: ", assetID);
     const result = await queryAssetsControllerObj.queryAssetWithID(assetID);
-    
+
     let _res = JSON.parse(result);
     setGetasset(_res.result.value.assets.value.id.value.idString)
     console.log("Query Response: ", _res.result.value.assets.value.id.value.idString);
@@ -296,7 +312,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <input type="text" class="form-control" placeholder="Enter UserName" name="text" onChange={handleChange} value={username} />
+        <input type="text" class="form-control" placeholder="Enter UserName" name="text" onChange={handleChange} value={username} />
         <br></br>
         <button onClick={() => handleCreateNubID(username)}>NubId</button>
         <br></br>
@@ -336,9 +352,10 @@ function App() {
           Define Asset
         </button>
         <br></br>
+        <input type="text" class="form-control" placeholder="Enter classificationID" name="text" onChange={handleassetID} value={assetClassificationID} />
         <button
           onClick={() =>
-            handleQueryClassification(generatedAssetClassificationID)
+            handleQueryClassification(assetClassificationID)
           }
         >
           Query Classification of Asset
@@ -348,6 +365,7 @@ function App() {
           Mint Asset
         </button>
         <br></br>
+        <input type="text" class="form-control" placeholder="Enter classificationID" name="text" onChange={handleassetID} value={assetClassificationID} />
         <button onClick={() => handleQueryAsset(generatedAsset)}>
           Query Asset
         </button>
