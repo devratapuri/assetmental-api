@@ -115,7 +115,8 @@ function App() {
     );
 
     setId(identity);
-    console.log(identity);
+    let _res = JSON.parse(identity);
+    console.log(_res.height);
   };
 
   const nubid = async () => {
@@ -383,7 +384,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <button onClick={query}>Query</button>
-        <div>{id.height}</div>
+        <div>{}</div>
         <br></br>
         <button onClick={nubid}>NubId</button>
         <br></br>
