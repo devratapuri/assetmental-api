@@ -34,6 +34,7 @@ function App() {
   const identityProvision = new provisionIdentity(url);
 
   const [username, setUsername] = useState('');
+  const [getasset, setGetasset] = useState();
 
   const handleChange = event => {
     setUsername(event.target.value);
@@ -261,7 +262,10 @@ function App() {
     // const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
     console.log("ID of Asset to be queried: ", assetID);
     const result = await queryAssetsControllerObj.queryAssetWithID(assetID);
-    console.log("Query Response: ", result);
+    
+    let _res = JSON.parse(result);
+    setGetasset(_res.result.value.assets.value.id.value.idString)
+    console.log("Query Response: ", _res.result.value.assets.value.id.value.idString);
   };
 
   const handleProvisionIdentity = async (identityToProvsion) => {
@@ -347,14 +351,17 @@ function App() {
         <button onClick={() => handleQueryAsset(generatedAsset)}>
           Query Asset
         </button>
+        <div>
+          {getasset}
+        </div>
         <br></br>
-        <button
+        {/* <button
           onClick={() =>
             handleProvisionIdentity(getNubIdFromUsername(username))
           }
         >
           Provision Id
-        </button>
+        </button> */}
         <br></br>
       </header>
     </div>
