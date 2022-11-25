@@ -104,7 +104,7 @@ function App() {
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
   
   let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
-  let generatedAsset = generatedAssetClassificationID + "|" + assetHashID;
+  let generatedAsset = assetClassificationID + "|" + assetHashID;
 
   // routine to generate Identity ID from username
   // first function to generate a hash of username
@@ -361,7 +361,7 @@ function App() {
           Query Classification of Asset
         </button>
         <br></br>
-        <button onClick={() => handleMintAsset(generatedAssetClassificationID)}>
+        <button onClick={() => handleMintAsset(assetClassificationID)}>
           Mint Asset
         </button>
         <br></br>
