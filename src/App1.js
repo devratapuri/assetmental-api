@@ -24,6 +24,8 @@ import base64 from "base-64";
 import utf8 from "utf8";
 import sha1 from "js-sha1";
 import base64url from "base64url";
+import axios from "axios";
+import { useState } from "react";
 
 function App() {
   //http://23.88.102.13:1317
@@ -38,6 +40,8 @@ function App() {
   const identityDefine = new defineIdentity(url);
   const identityIssue = new issueIdentity(url);
   const identityProvision = new provisionIdentity(url);
+
+  const [id,setId] = useState();
 
   const mnemonic =
     "wage thunder live sense resemble foil apple course spin horse glass mansion midnight laundry acoustic rhythm loan scale talent push green direct brick please";
@@ -92,6 +96,16 @@ function App() {
     console.log("generated Identity ID: ", identityID);
     return identityID;
   }
+  function extractContent(html) {
+    return new DOMParser()
+        .parseFromString(html, "text/html")
+        .documentElement.textContent;
+}
+  const tx = "9854D8B2E1DA68443CB72BDC9992B3FC4788101FB8B395F1C449F3C982FAB154";
+  const fetchAsset = async() => {
+    const getid = await axios.get("https://devnet.explorer.assetmantle.one/component/transactionMessages?txHash=" + tx);
+    console.log(extractContent(getid))};
+  fetchAsset();
 
   const query = async () => {
     // const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
@@ -99,6 +113,8 @@ function App() {
     const identity = await queryIdentitiesControllerObj.queryIdentityWithID(
       getIdFromUsername(username)
     );
+
+    setId(identity);
     console.log(identity);
   };
 
@@ -367,6 +383,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <button onClick={query}>Query</button>
+        <div>{id.height}</div>
         <br></br>
         <button onClick={nubid}>NubId</button>
         <br></br>

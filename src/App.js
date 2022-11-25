@@ -265,8 +265,12 @@ function App() {
       identityID1,
       "ASSET100:S|num1,burn:H|1",
       assetImmutables,
-      "ASSET102:S|num333",
-      "ASSET103:S|num46",
+      `propertyName:S|${base64.encode(
+        JSON.stringify(propertiesArray64)
+      )},type:S|asset`,
+      `URI:S|${base64.encode(imageURL64)},name:S|${base64.encode(
+        name64
+      )},description:S|${base64.encode(desc64)},category:S|ZCB0cw`,
       1,
       "umntl",
       "400000",
