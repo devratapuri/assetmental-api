@@ -36,6 +36,7 @@ function App() {
   const [username, setUsername] = useState('');
   const [getasset, setGetasset] = useState();
   const [assetClassificationID, setAssetClassificationID] = useState('');
+  const [assetID, setAssetID] = useState('');
 
   const handleChange = event => {
     setUsername(event.target.value);
@@ -44,6 +45,11 @@ function App() {
   };
   const handleassetID = event => {
     setAssetClassificationID(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handlequeryassetID = event => {
+    setAssetID(event.target.value);
 
     console.log('value is:', event.target.value);
   };
@@ -62,7 +68,7 @@ function App() {
     "traitImmutable266:S|string2948, traitImmutable267:S|";
   let identityMetaImmutables =
     "traitMetaImmutable356:S|string96548, traitMetaImmutable357:S|";
-    //Immutable Properties for the Identity for Setting
+  //Immutable Properties for the Identity for Setting
   let stringIdentityImmutables = "string2949"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
   let stringIdentityMetaImmutables = "string96549"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
   // Mutable properties of the Identity for Defining
@@ -70,23 +76,23 @@ function App() {
     "traitMutableIdentity468:S|string540, traitMutableIdentity469:S|"; // change this for multiple issueIdentities calls ?
   let identityMetaMutables =
     "traitMetaMutableIdentity499:S|string945, traitMetaMutableIdentity500:S|"; // change this for multiple issueIdentities calls
-    //Immutable Properties for the Identity for Setting
-    let stringIdentityMutables = "string541";
-    let stringIdentityMetaMutables = "string946";
+  //Immutable Properties for the Identity for Setting
+  let stringIdentityMutables = "string541";
+  let stringIdentityMetaMutables = "string946";
 
 
   //Immutable properties of the asset for Defining
   let assetImmutables = "Name2:S|";
-  let assetMetaImmutables ="URI2:S|";
+  let assetMetaImmutables = "URI2:S|";
   //Immutable Properties for the asset for Setting
   let stringAssetImmutables = "Name of the asset"; // change this value if you are going to re-run mintAsset() to create a new nft
   let stringAssetMetaImmutables = "Link for the image of NFT"; // change this value if you are going to re-run mintAsset() to create a new nft
 
   // Mutable properties of the asset for Defining
-  let assetMutables ="traitMutableasset48:S|string7258, traitMutableasset49:S|";
-  let assetMetaMutables ="traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
+  let assetMutables = "traitMutableasset48:S|string7258, traitMutableasset49:S|";
+  let assetMetaMutables = "traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
 
- //Immutable Properties for the asset for Setting
+  //Immutable Properties for the asset for Setting
   let stringAssetMutables = "string72597259";
   let stringAssetMetaMutables = "string84498449";
 
@@ -100,9 +106,9 @@ function App() {
   let generatedIdentity =
     generatedIdentityClassificationID + "|" + identityHashID;
   // after doing defineAsset, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Asset
-  
+
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
-  
+
   let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
   let generatedAsset = assetClassificationID + "|" + assetHashID;
 
@@ -219,7 +225,7 @@ function App() {
     // execute define asset transaction
     let res = await assetDefine.define(
       wallet.address,
-      config.chain_id,
+      config.chain_id, // devnet-mantle-1
       userGivenMnemonic,
       definerIdentity,
       assetMutables,
@@ -256,8 +262,8 @@ function App() {
       wallet.address,
       config.chain_id,
       userGivenMnemonic,
-      identityID1,
-      identityID1,
+      identityID1,// rom ID
+      identityID1,// To id
       assetClassificationID,
       assetMutables + stringAssetMutables,
       assetImmutables + stringAssetImmutables,
@@ -365,7 +371,7 @@ function App() {
           Mint Asset
         </button>
         <br></br>
-        <input type="text" class="form-control" placeholder="Enter classificationID" name="text" onChange={handleassetID} value={assetClassificationID} />
+        <input type="text" class="form-control" placeholder="Enter Asset ID" name="text" onChange={handlequeryassetID} value={assetID} />
         <button onClick={() => handleQueryAsset(generatedAsset)}>
           Query Asset
         </button>
