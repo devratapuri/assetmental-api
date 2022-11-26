@@ -19,6 +19,7 @@ import {
 import base64url from "base64url";
 import sha1 from "js-sha1";
 import { useState } from "react";
+import { queryMeta } from "@assetmantle/mantlejs/build/transaction/meta/query";
 
 function App() {
   let url = config.TENDERMINT_REST_URL;
@@ -32,7 +33,7 @@ function App() {
   const identityDefine = new defineIdentity(url);
   const identityIssue = new issueIdentity(url);
   const identityProvision = new provisionIdentity(url);
-
+  const queryMeta1 = new queryMeta(url);
   const [username, setUsername] = useState('');
   const [getasset, setGetasset] = useState();
   const [assetClassificationID, setAssetClassificationID] = useState('');
@@ -54,6 +55,10 @@ function App() {
     console.log('value is:', event.target.value);
   };
   // HARDCODED VALUES
+  const random = async () => {
+  const change =  await queryMeta1.queryMetaWithID("Lmcr1-meS7_7N99Q-8qFAz1a444=");
+  console.log(change);}
+  random();
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
   // you can choose to use the same hardcoded mnemonic for all operations. address: mantle1prx5ch3zc79glpxef0l3h7sl5e7z48znu69sr4
