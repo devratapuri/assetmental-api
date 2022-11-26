@@ -34,10 +34,12 @@ function App() {
   const identityIssue = new issueIdentity(url);
   const identityProvision = new provisionIdentity(url);
   const queryMeta1 = new queryMeta(url);
+
   const [username, setUsername] = useState('');
   const [getasset, setGetasset] = useState();
   const [assetClassificationID, setAssetClassificationID] = useState('');
   const [assetID, setAssetID] = useState('');
+  const [nubID, setnubID] = useState('');
 
   const handleChange = event => {
     setUsername(event.target.value);
@@ -54,19 +56,18 @@ function App() {
 
     console.log('value is:', event.target.value);
   };
-  // HARDCODED VALUES
-  const random = async () => {
-  const change =  await queryMeta1.queryMetaWithID("Lmcr1-meS7_7N99Q-8qFAz1a444=");
-  console.log(change);}
-  random();
+
+  // const random = async () => {
+  //   const change = await queryMeta1.queryMetaWithID("Lmcr1-meS7_7N99Q-8qFAz1a444=");
+  //   console.log(change);
+  // }
+  // random();
+
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
   // you can choose to use the same hardcoded mnemonic for all operations. address: mantle1prx5ch3zc79glpxef0l3h7sl5e7z48znu69sr4
   let userGivenMnemonic =
     "bracket oven album lawn funny faint unfold ripple label thunder century become fiber suffer typical candy drill water remind cactus orbit scan spy cook";
-
-  // set values (change them if restarting all tests from the beginning)
-
 
   //Immutable properties of the Identity for Defining
   let identityImmutables =
@@ -87,15 +88,15 @@ function App() {
 
 
   //Immutable properties of the asset for Defining
-  let assetImmutables = "Name2:S|";
-  let assetMetaImmutables = "URI2:S|";
+  let assetImmutables = "Name:S|";
+  let assetMetaImmutables = "URI:S|";
   //Immutable Properties for the asset for Setting
   let stringAssetImmutables = "Name of the asset"; // change this value if you are going to re-run mintAsset() to create a new nft
   let stringAssetMetaImmutables = "Link for the image of NFT"; // change this value if you are going to re-run mintAsset() to create a new nft
 
   // Mutable properties of the asset for Defining
-  let assetMutables = "traitMutableasset48:S|string7258, traitMutableasset49:S|";
-  let assetMetaMutables = "traitMetaMutableasset499:S|string8448, traitMetaMutableasset500:S|"; // change this for multiple mintAsset calls
+  let assetMutables = "traitMutableasset48:S|string7258";
+  let assetMetaMutables = "traitMetaMutableasset499:S|string8448"; // change this for multiple mintAsset calls
 
   //Immutable Properties for the asset for Setting
   let stringAssetMutables = "string72597259";
@@ -129,6 +130,7 @@ function App() {
     const generatedHashValue = getHash(getHash(username));
     const identityID =
       config.chain_id + "." + nubClassificationID + "|" + generatedHashValue;
+    setnubID(identityID);
     return identityID;
   }
 
@@ -245,7 +247,7 @@ function App() {
     );
 
     console.log("Transaction Response: ", res);
-    alert(res.txhash);
+    alert(`TxHash ${res.txhash}`);
 
     /* let listResponse = await FindInResponse(
       "classifications",
@@ -267,7 +269,7 @@ function App() {
       wallet.address,
       config.chain_id,
       userGivenMnemonic,
-      identityID1,// rom ID
+      identityID1,// From ID
       identityID1,// To id
       assetClassificationID,
       assetMutables + stringAssetMutables,
@@ -282,7 +284,7 @@ function App() {
     );
 
     console.log("Transaction Response: ", res.txhash);
-    alert(res.txhash);
+    alert(`TxHash ${res.txhash}`);
   };
 
   const handleQueryAsset = async (assetID) => {
@@ -324,22 +326,24 @@ function App() {
     <div className="App">
       <header className="App-header">
         <input type="text" class="form-control" placeholder="Enter UserName" name="text" onChange={handleChange} value={username} />
+        <button className="button" onClick={() => handleCreateNubID(username)}>NubId</button>
         <br></br>
-        <button onClick={() => handleCreateNubID(username)}>NubId</button>
-        <br></br>
-        <button
+        <button className="button"
           onClick={() => handleQueryIdentity(getNubIdFromUsername(username))}
         >
           Query Nub Identity
         </button>
         <br></br>
-        <button
+        <div>
+          {nubID}
+        </div>
+        {/* <button className="button"
           onClick={() => handleDefineIdentity(getNubIdFromUsername(username))}
         >
           Define Id
         </button>
-        <br></br>
-        <button
+        <br></br> */}
+        {/* <button className="button"
           onClick={() =>
             handleQueryClassification(generatedIdentityClassificationID)
           }
@@ -347,24 +351,24 @@ function App() {
           Query Classification of Identity
         </button>
         <br></br>
-        <button
+        <button className="button"
           onClick={() => handleIssueIdentity(generatedIdentityClassificationID)}
         >
           Issue Id
         </button>
         <br></br>
-        <button onClick={() => handleQueryIdentity(generatedIdentity)}>
+        <button className="button" onClick={() => handleQueryIdentity(generatedIdentity)}>
           Query Identity
-        </button>
+        </button> */}
         <br></br>
-        <button
+        <button className="button"
           onClick={() => handleDefineAsset(getNubIdFromUsername(username))}
         >
           Define Asset
         </button>
         <br></br>
         <input type="text" class="form-control" placeholder="Enter classificationID" name="text" onChange={handleassetID} value={assetClassificationID} />
-        <button
+        <button className="button"
           onClick={() =>
             handleQueryClassification(assetClassificationID)
           }
@@ -372,12 +376,12 @@ function App() {
           Query Classification of Asset
         </button>
         <br></br>
-        <button onClick={() => handleMintAsset(assetClassificationID)}>
+        <button className="button" onClick={() => handleMintAsset(assetClassificationID)}>
           Mint Asset
         </button>
         <br></br>
         <input type="text" class="form-control" placeholder="Enter Asset ID" name="text" onChange={handlequeryassetID} value={assetID} />
-        <button onClick={() => handleQueryAsset(generatedAsset)}>
+        <button className="button" onClick={() => handleQueryAsset(generatedAsset)}>
           Query Asset
         </button>
         <div>
