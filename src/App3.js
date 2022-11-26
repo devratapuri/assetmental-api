@@ -39,10 +39,11 @@ function App() {
   const [getasset, setGetasset] = useState();
   const [assetClassificationID, setAssetClassificationID] = useState('');
   const [nubID, setnubID] = useState('');
-  const [assetID,setAssetID] = useState('');
-  const [nameHashID,setnameHashID] = useState('');
-  const [URIHashID,setURIID] = useState('');
-  const [CatogaryHashID,setCatogaryHashID]= useState('');
+  const [assetID, setAssetID] = useState('');
+
+  const [nameHashID, setnameHashID] = useState('');
+  const [URIHashID, setURIID] = useState('');
+  const [CatogaryHashID, setCatogaryHashID] = useState('');
 
   const [name, setName] = useState('');
   const [uri, setUri] = useState('');
@@ -54,11 +55,28 @@ function App() {
 
     console.log('value is:', event.target.value);
   };
+  //----------
   const handleName = event => {
     setName(event.target.value);
 
     console.log('value is:', event.target.value);
   };
+  const handleUri = event => {
+    setUri(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handleCategory = event => {
+    setCategory(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handleDescription = event => {
+    setDescription(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  //----------
   const handleassetID = event => {
     setAssetClassificationID(event.target.value);
 
@@ -74,7 +92,7 @@ function App() {
     const change = await queryMeta1.queryMetaWithID(`${assetID}`);
     console.log(change);
   }
-random();
+  random();
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
   // you can choose to use the same hardcoded mnemonic for all operations. address: mantle1prx5ch3zc79glpxef0l3h7sl5e7z48znu69sr4
@@ -86,7 +104,7 @@ random();
     "traitImmutable266:S|string2948, traitImmutable267:S|";
   let identityMetaImmutables =
     "traitMetaImmutable356:S|string96548, traitMetaImmutable357:S|";
-    //Immutable Properties for the Identity for Setting
+  //Immutable Properties for the Identity for Setting
   let stringIdentityImmutables = "string2949"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
   let stringIdentityMetaImmutables = "string96549"; // change this value if you are going to re-run issueIdentity() to create a new identity instance
   // Mutable properties of the Identity for Defining
@@ -94,9 +112,9 @@ random();
     "traitMutableIdentity468:S|string540, traitMutableIdentity469:S|"; // change this for multiple issueIdentities calls ?
   let identityMetaMutables =
     "traitMetaMutableIdentity499:S|string945, traitMetaMutableIdentity500:S|"; // change this for multiple issueIdentities calls
-    //Immutable Properties for the Identity for Setting
-    let stringIdentityMutables = "string541";
-    let stringIdentityMetaMutables = "string946";
+  //Immutable Properties for the Identity for Setting
+  let stringIdentityMutables = "string541";
+  let stringIdentityMetaMutables = "string946";
 
 
   //Immutable properties of the asset for Defining
@@ -110,7 +128,7 @@ random();
   let assetMutables = "traitMutableasset48:S|string7258";
   let assetMetaMutables = "traitMetaMutableasset499:S|string8448"; // change this for multiple mintAsset calls
 
- //Immutable Properties for the asset for Setting
+  //Immutable Properties for the asset for Setting
   let stringAssetMutables = "string72597259";
   let stringAssetMetaMutables = "string84498449";
 
@@ -124,9 +142,9 @@ random();
   let generatedIdentity =
     generatedIdentityClassificationID + "|" + identityHashID;
   // after doing defineAsset, search in the REST api (/xprt/classifications/classifications/all) for a specific immutable propertyName to find the classification ID of Asset
-  
+
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
-  
+
   let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
   let generatedAsset = assetClassificationID + "|" + assetHashID;
 
@@ -262,13 +280,6 @@ random();
 
     console.log("Transaction Response: ", res);
     alert(`TxHash ${res.txhash}`);
-
-    /* let listResponse = await FindInResponse(
-      "classifications",
-      results,
-      "ASSET4"
-    );
-    console.log(results); */
   };
 
   const handleMintAsset = async (assetClassificationID) => {
@@ -390,6 +401,11 @@ random();
           Query Classification of Asset
         </button>
         <br></br>
+        <div className="input">
+        <input type="text" class="form-control" placeholder="NFT name" name="text" onChange={handleName} value={name} />
+        <input type="text" class="form-control" placeholder="NFT image link" name="text" onChange={handleUri} value={uri} />
+        <input type="text" class="form-control" placeholder="NFT Description" name="text" onChange={handleDescription} value={description} />
+        </div>
         <button className="button" onClick={() => handleMintAsset(assetClassificationID)}>
           Mint Asset
         </button>
