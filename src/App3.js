@@ -41,8 +41,18 @@ function App() {
   const [assetID, setAssetID] = useState('');
   const [nubID, setnubID] = useState('');
 
+  const [name, setName] = useState('');
+  const [uri, setUri] = useState('');
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+
   const handleChange = event => {
     setUsername(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handleName = event => {
+    setName(event.target.value);
 
     console.log('value is:', event.target.value);
   };
@@ -88,7 +98,7 @@ function App() {
 
 
   //Immutable properties of the asset for Defining
-  let assetImmutables = "Name:S|";
+  let assetImmutables = "burn:H|";
   let assetMetaImmutables = "URI:S|";
   //Immutable Properties for the asset for Setting
   let stringAssetImmutables = "Name of the asset"; // change this value if you are going to re-run mintAsset() to create a new nft
@@ -225,6 +235,8 @@ function App() {
     alert("Transaction Response: ", res.txHash);
   };
 
+
+
   const handleDefineAsset = async (definerIdentity) => {
     let wallet = await createWallet(userGivenMnemonic, "");
     console.log("Identity ID of Definer: ", definerIdentity);
@@ -238,7 +250,7 @@ function App() {
       assetMutables,
       assetImmutables,
       assetMetaMutables,
-      assetMetaImmutables,
+      `URI:S|,Name:S|,description:S|,category:S|`,
       1,
       "umntl",
       "400000",
