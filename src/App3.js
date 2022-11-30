@@ -20,6 +20,8 @@ import base64url from "base64url";
 import sha1 from "js-sha1";
 import { useState } from "react";
 import { queryMeta } from "@assetmantle/mantlejs/build/transaction/meta/query";
+import base64 from "base-64";
+import utf8 from "utf8";
 
 function App() {
   let url = config.TENDERMINT_REST_URL;
@@ -287,6 +289,11 @@ function App() {
       "Classification ID of Asset Definition: ",
       assetClassificationID
     );
+    const name64 = utf8.encode(name);
+    const imageURL64 = utf8.encode(uri);
+    const category64 = utf8.encode(category);
+    const desc64 = utf8.encode(description);
+
     let wallet = await createWallet(userGivenMnemonic, "");
     let identityID1 = getNubIdFromUsername(username);
 
@@ -300,7 +307,9 @@ function App() {
       assetMutables + stringAssetMutables,
       assetImmutables + stringAssetImmutables,
       assetMetaMutables + stringAssetMetaMutables,
-      assetMetaImmutables + stringAssetMetaImmutables,
+      `URI:S|${base64.encode(imageURL64)},Name:S|${base64.encode(
+        name64
+      )},description:S|${base64.encode(desc64)},category:S|${base64.encode(category64)}`,
       1,
       "umntl",
       "400000",
@@ -398,12 +407,13 @@ function App() {
             handleQueryClassification(assetClassificationID)
           }
         >
-          Query Classification of Asset
+          Set ClassificationID of Asset
         </button>
         <br></br>
         <div className="input">
         <input type="text" class="form-control" placeholder="NFT name" name="text" onChange={handleName} value={name} />
         <input type="text" class="form-control" placeholder="NFT image link" name="text" onChange={handleUri} value={uri} />
+        <input type="text" class="form-control" placeholder="NFT Category" name="text" onChange={handleCategory} value={category} />
         <input type="text" class="form-control" placeholder="NFT Description" name="text" onChange={handleDescription} value={description} />
         </div>
         <button className="button" onClick={() => handleMintAsset(assetClassificationID)}>
