@@ -91,8 +91,10 @@ function App() {
   };
 
   const random = async () => {
-    const change = await queryMeta1.queryMetaWithID(`${assetID}`);
-    console.log(change);
+    const change = await queryMeta1.queryMetaWithID(`GvF-c3IdvgxAARuC7Uuxp9vjzik=`);
+    const obj = JSON.parse(change)
+    let rand = obj.result.value.metas.value.list[0].value.data.value.value;
+    console.log(rand);
   }
   random();
   // nub classification will always remain constant. This is not to be changed
