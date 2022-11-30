@@ -51,6 +51,10 @@ function App() {
   const [uri, setUri] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
+  const [namehash,setnamehash] = useState('');
+  const [URIhash,setURIhash] = useState('');
+  const [Categoryhash,setCategoryhash] = useState('');
+  const [descriptionhash,setdescriptionhash] = useState('');
 
   const handleChange = event => {
     setUsername(event.target.value);
@@ -63,18 +67,37 @@ function App() {
 
     console.log('value is:', event.target.value);
   };
+  const handleNameHash = event => {
+    setnamehash(event.target.value);
+    console.log('value is:', random(event.target.value));
+  };
   const handleUri = event => {
     setUri(event.target.value);
 
     console.log('value is:', event.target.value);
+  };
+  const handleUriHash = event => {
+    setURIhash(event.target.value);
+
+    console.log('value is:', random(event.target.value));
   };
   const handleCategory = event => {
     setCategory(event.target.value);
 
     console.log('value is:', event.target.value);
   };
+  const handleCategoryHash = event => {
+    setCategoryhash(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
   const handleDescription = event => {
     setDescription(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
+  const handleDescriptionHash = event => {
+    setdescriptionhash(random(event.target.value));
 
     console.log('value is:', event.target.value);
   };
@@ -90,8 +113,8 @@ function App() {
     console.log('value is:', event.target.value);
   };
 
-  const random = async () => {
-    const change = await queryMeta1.queryMetaWithID(`GvF-c3IdvgxAARuC7Uuxp9vjzik=`);
+  const random = async (e) => {
+    const change = await queryMeta1.queryMetaWithID(e);
     const obj = JSON.parse(change)
     let rand = obj.result.value.metas.value.list[0].value.data.value.value;
     console.log(rand);
@@ -429,6 +452,16 @@ function App() {
         <div>
           {getasset}
         </div>
+        <br></br>
+        <div className="input">
+        <input type="text" class="form-control" placeholder="NFT name hash" name="text" onChange={handleNameHash} value={namehash} />
+        <input type="text" class="form-control" placeholder="NFT image hash" name="text" onChange={handleUriHash} value={URIhash} />
+        <input type="text" class="form-control" placeholder="NFT Category hash" name="text" onChange={handleCategoryHash} value={Categoryhash} />
+        <input type="text" class="form-control" placeholder="NFT Description hash" name="text" onChange={handleDescriptionHash} value={descriptionhash} />
+        </div>
+        <button className="button">
+          Fetch Asset 
+        </button>
         <br></br>
         {/* <button
           onClick={() =>
