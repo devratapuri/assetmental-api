@@ -219,14 +219,17 @@ const[displaydescription,setdisplaydiscription]=useState('');
 
   const handleshowNFT = async() =>{
     const name3 = await random(namehash);
+    const name4 =await atob(name3);
     const uri3 =await random(URIhash);
     const uri4 = await atob(uri3);
     const description1 = await random(descriptionhash);
+    const description2 = await atob(description1);
     const category1 = await random(Categoryhash);
-    setdisplaycategory(category1);
-    setdisplaydiscription(description1);
+    const category2 = await atob(category1);
+    setdisplaycategory(category2);
+    setdisplaydiscription(description2);
     setdisplayuri(uri4);
-    setdisplayname(name3)
+    setdisplayname(name4)
     console.log(random(displayname));
     console.log(uri3);
     console.log(uri4);
