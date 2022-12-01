@@ -42,12 +42,15 @@ function App() {
   const [assetClassificationID, setAssetClassificationID] = useState('');
   const [nubID, setnubID] = useState('');
   const [assetID, setAssetID] = useState('');
-
+const[displayname,setdisplayname] = useState('');
+const[displayuri,setdisplayuri]=useState('');
+const[displaycategory,setdisplaycategory]=useState('');
+const[displaydescription,setdisplaydiscription]=useState('');
   const [nameHashID, setnameHashID] = useState('');
   const [URIHashID, setURIID] = useState('');
   const [CatogaryHashID, setCatogaryHashID] = useState('');
-
-  const [name, setName] = useState('');
+  const [uri1, setUri1] = useState('');
+  const [name, setname] = useState('');
   const [uri, setUri] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
@@ -63,7 +66,7 @@ function App() {
   };
   //----------
   const handleName = event => {
-    setName(event.target.value);
+    setname(event.target.value);
 
     console.log('value is:', event.target.value);
   };
@@ -71,15 +74,17 @@ function App() {
     setnamehash(event.target.value);
     console.log('value is:', random(event.target.value));
   };
+  
   const handleUri = event => {
     setUri(event.target.value);
 
     console.log('value is:', event.target.value);
   };
   const handleUriHash = event => {
-    setURIhash(event.target.value);
-
-    console.log('value is:', random(event.target.value));
+     setURIhash(event.target.value);
+    // const encoded = atob(random(event.target.value));
+    // setUri1(encoded);
+    console.log('value is:', URIhash);
   };
   const handleCategory = event => {
     setCategory(event.target.value);
@@ -87,7 +92,7 @@ function App() {
     console.log('value is:', event.target.value);
   };
   const handleCategoryHash = event => {
-    setCategoryhash(event.target.value);
+    setCategoryhash(random(event.target.value));
 
     console.log('value is:', event.target.value);
   };
@@ -97,7 +102,7 @@ function App() {
     console.log('value is:', event.target.value);
   };
   const handleDescriptionHash = event => {
-    setdescriptionhash(random(event.target.value));
+    setdescriptionhash(event.target.value);
 
     console.log('value is:', event.target.value);
   };
@@ -116,10 +121,12 @@ function App() {
   const random = async (e) => {
     const change = await queryMeta1.queryMetaWithID(e);
     const obj = JSON.parse(change)
-    let rand = obj.result.value.metas.value.list[0].value.data.value.value;
-    console.log(rand);
+    const rand = await obj.result.value.metas.value.list[0].value.data.value.value;
+    return rand;
+    // let uri3 = atob(rand) ;
+    // setUri1(uri3);
+    // console.log(uri3);
   }
-  random();
   // nub classification will always remain constant. This is not to be changed
   const nubClassificationID = "cGn3HMW8M3t5gMDv-wXa9sseHnA=";
   // you can choose to use the same hardcoded mnemonic for all operations. address: mantle1prx5ch3zc79glpxef0l3h7sl5e7z48znu69sr4
@@ -210,6 +217,16 @@ function App() {
     console.log("Transaction Response: ", res);
   };
 
+  const handleshowNFT = async() =>{
+    const name3 = await random(namehash);
+    const uri3 =await random(URIhash);
+    const uri4 = await atob(uri3);
+    setdisplayuri(uri4);
+    setdisplayname(name3)
+    console.log(random(displayname));
+    console.log(uri3);
+    console.log(uri4);
+  }
   const handleQueryIdentity = async (identityID) => {
     // const identitiesPromise = await queryIdentitiesControllerObj.queryIdentity();
     console.log("ID to be queried: ", identityID);
@@ -459,9 +476,20 @@ function App() {
         <input type="text" class="form-control" placeholder="NFT Category hash" name="text" onChange={handleCategoryHash} value={Categoryhash} />
         <input type="text" class="form-control" placeholder="NFT Description hash" name="text" onChange={handleDescriptionHash} value={descriptionhash} />
         </div>
-        <button className="button">
+        <button className="button" onClick={handleshowNFT}>
           Fetch Asset 
         </button>
+        <div>
+          {displayname}
+        </div>
+        <img src ={displayuri}>
+        </img>
+        <div>
+          {displaydescription}
+        </div>
+        <div>
+          {displaycategory}
+        </div>
         <br></br>
         {/* <button
           onClick={() =>
