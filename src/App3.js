@@ -221,6 +221,10 @@ const[displaydescription,setdisplaydiscription]=useState('');
     const name3 = await random(namehash);
     const uri3 =await random(URIhash);
     const uri4 = await atob(uri3);
+    const description1 = await random(descriptionhash);
+    const category1 = await random(Categoryhash);
+    setdisplaycategory(category1);
+    setdisplaydiscription(description1);
     setdisplayuri(uri4);
     setdisplayname(name3)
     console.log(random(displayname));
