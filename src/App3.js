@@ -59,6 +59,7 @@ const[displaydescription,setdisplaydiscription]=useState('');
   const [Categoryhash,setCategoryhash] = useState('');
   const [descriptionhash,setdescriptionhash] = useState('');
 
+
   const handleChange = event => {
     setUsername(event.target.value);
 
@@ -151,6 +152,7 @@ const[displaydescription,setdisplaydiscription]=useState('');
   let stringIdentityMetaMutables = "string946";
 
 
+
   //Immutable properties of the asset for Defining
   let assetImmutables = "burn:H|";
   let assetMetaImmutables = "URI:S|";
@@ -217,7 +219,16 @@ const[displaydescription,setdisplaydiscription]=useState('');
     console.log("Transaction Response: ", res);
   };
 
+  const setHash = async() => {
+    setnamehash("Lmcr1-meS7_7N99Q-8qFAz1a444=");
+    setURIhash("PIauQhwWtW0YaQ6BatBy8tn3BpY");
+    setCategoryhash("V2x3F07HypLiU1BLTj63cM-la1U=");
+    setdescriptionhash("-g4XclGeqKeGeJvW3T1YupdD_44=");
+  }
+
   const handleshowNFT = async() =>{
+
+    await setHash();
     const name3 = await random(namehash);
     const name4 =await atob(name3);
     const uri3 =await random(URIhash);
@@ -477,12 +488,12 @@ const[displaydescription,setdisplaydiscription]=useState('');
           {getasset}
         </div>
         <br></br>
-        <div className="input">
+        {/* <div className="input">
         <input type="text" class="form-control" placeholder="NFT name hash" name="text" onChange={handleNameHash} value={namehash} />
         <input type="text" class="form-control" placeholder="NFT image hash" name="text" onChange={handleUriHash} value={URIhash} />
         <input type="text" class="form-control" placeholder="NFT Category hash" name="text" onChange={handleCategoryHash} value={Categoryhash} />
         <input type="text" class="form-control" placeholder="NFT Description hash" name="text" onChange={handleDescriptionHash} value={descriptionhash} />
-        </div>
+        </div> */}
         <button className="button" onClick={handleshowNFT}>
           Fetch Asset 
         </button>
