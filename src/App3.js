@@ -16,6 +16,10 @@ import {
   createRandomWallet,
   createWallet,
 } from "@assetmantle/mantlejs/build/utilities/keys";
+import { defineOrder } from "@assetmantle/mantlejs/build/transaction/orders/define";
+import { makeOrder } from "@assetmantle/mantlejs/build/transaction/orders/make";
+import { queryOrders } from "@assetmantle/mantlejs/build/transaction/orders/query";
+import { takeOrder } from "@assetmantle/mantlejs/build/transaction/orders/take";
 import base64url from "base64url";
 import sha1 from "js-sha1";
 import { useState } from "react";
@@ -36,16 +40,19 @@ function App() {
   const identityIssue = new issueIdentity(url);
   const identityProvision = new provisionIdentity(url);
   const queryMeta1 = new queryMeta(url);
+  const orderDefine = new defineOrder(url);
+  const orderMake = new makeOrder(url);
+  const orderTake = new takeOrder(url);
 
   const [username, setUsername] = useState('');
   const [getasset, setGetasset] = useState();
   const [assetClassificationID, setAssetClassificationID] = useState('');
   const [nubID, setnubID] = useState('');
   const [assetID, setAssetID] = useState('');
-const[displayname,setdisplayname] = useState('');
-const[displayuri,setdisplayuri]=useState('');
-const[displaycategory,setdisplaycategory]=useState('');
-const[displaydescription,setdisplaydiscription]=useState('');
+  const [displayname, setdisplayname] = useState('');
+  const [displayuri, setdisplayuri] = useState('');
+  const [displaycategory, setdisplaycategory] = useState('');
+  const [displaydescription, setdisplaydiscription] = useState('');
   const [nameHashID, setnameHashID] = useState('');
   const [URIHashID, setURIID] = useState('');
   const [CatogaryHashID, setCatogaryHashID] = useState('');
@@ -54,10 +61,10 @@ const[displaydescription,setdisplaydiscription]=useState('');
   const [uri, setUri] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [namehash,setnamehash] = useState('');
-  const [URIhash,setURIhash] = useState('');
-  const [Categoryhash,setCategoryhash] = useState('');
-  const [descriptionhash,setdescriptionhash] = useState('');
+  const [namehash, setnamehash] = useState('');
+  const [URIhash, setURIhash] = useState('');
+  const [Categoryhash, setCategoryhash] = useState('');
+  const [descriptionhash, setdescriptionhash] = useState('');
 
 
   const handleChange = event => {
@@ -75,14 +82,14 @@ const[displaydescription,setdisplaydiscription]=useState('');
     setnamehash(event.target.value);
     console.log('value is:', random(event.target.value));
   };
-  
+
   const handleUri = event => {
     setUri(event.target.value);
 
     console.log('value is:', event.target.value);
   };
   const handleUriHash = event => {
-     setURIhash(event.target.value);
+    setURIhash(event.target.value);
     // const encoded = atob(random(event.target.value));
     // setUri1(encoded);
     console.log('value is:', URIhash);
@@ -219,19 +226,19 @@ const[displaydescription,setdisplaydiscription]=useState('');
     console.log("Transaction Response: ", res);
   };
 
-  const setHash = async() => {
+  const setHash = async () => {
     setnamehash("Lmcr1-meS7_7N99Q-8qFAz1a444=");
     setURIhash("PIauQhwWtW0YaQ6BatBy8tn3BpY");
     setCategoryhash("V2x3F07HypLiU1BLTj63cM-la1U=");
     setdescriptionhash("-g4XclGeqKeGeJvW3T1YupdD_44=");
   }
 
-  const handleshowNFT = async() =>{
+  const handleshowNFT = async () => {
 
     await setHash();
     const name3 = await random(namehash);
-    const name4 =await atob(name3);
-    const uri3 =await random(URIhash);
+    const name4 = await atob(name3);
+    const uri3 = await random(URIhash);
     const uri4 = await atob(uri3);
     const description1 = await random(descriptionhash);
     const description2 = await atob(description1);
@@ -355,18 +362,18 @@ const[displaydescription,setdisplaydiscription]=useState('');
     const desc64 = utf8.encode(description);
 
     let wallet = await createWallet(userGivenMnemonic, "");
-    let identityID1 = getNubIdFromUsername(username);
+    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|0K-zQ2oI674TchrKWPyM2HJmyh8=";
 
     let res = await assetMint.mint(
-      wallet.address,
+      "mantle18zl8un2n9jh79w8yc9k83cmykhu90yhknjqrfe",
       config.chain_id,
       userGivenMnemonic,
       identityID1,// From ID
       identityID1,// To id
       assetClassificationID,
-      assetMutables + stringAssetMutables,
-      assetImmutables + stringAssetImmutables,
-      assetMetaMutables + stringAssetMetaMutables,
+      assetMutables,
+      assetImmutables,
+      assetMetaMutables,
       `URI:S|${base64.encode(imageURL64)},Name:S|${base64.encode(
         name64
       )},description:S|${base64.encode(desc64)},category:S|${base64.encode(category64)}`,
@@ -415,6 +422,79 @@ const[displaydescription,setdisplaydiscription]=useState('');
 
     console.log("Transaction Response: ", res);
   };
+
+  const handleDefineOrder = async () => {
+
+    let wallet = await createWallet(userGivenMnemonic, "");
+    let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
+    let mutableMetaProperties =
+      "exchangeRate:D|1,makerOwnableSplit:D|0.000000000000000001,expiry:H|1000000,takerID:I|ID";
+    let res = await orderDefine.define(
+      wallet.address,
+      config.chain_id,
+      userGivenMnemonic,
+      identityID2,
+      assetMutables,
+      assetImmutables,
+      mutableMetaProperties,
+      `URI:S|,Name315:S|,description:S|,category:S|`,
+      1,
+      "umntl",
+      "400000",
+      "block",
+      ""
+    );
+
+    console.log(res);
+  }
+
+  const handleMakeOrder = async () => {
+    let wallet = await createWallet(userGivenMnemonic, "");
+    let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
+    let orderCls = 'devnet-mantle-1.8g1LTC4p-JcgphW3mF3RZOWpHUo='
+    let res = await orderMake.make(
+      wallet.address,
+      config.chain_id,
+      userGivenMnemonic,
+      identityID2,
+      orderCls,
+      'umntl',
+      'umntl',
+      "100000",
+      "0.000000000000000001",
+      assetMutables,
+      assetImmutables,
+      "exchangeRate:D|1",
+      `URI:S|,Name315:S|,description:S|,category:S|`,
+      1,
+      "umntl",
+      "400000",
+      "block",
+      ""
+    );
+    console.log(res);
+  }
+  const handleTakeOrder = async () => {
+    let wallet = await createWallet(userGivenMnemonic, "");
+    let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
+    let orderID = ''
+    let res = await orderTake.take(
+      wallet.address,
+      config.chain_id,
+      userGivenMnemonic,
+      identityID2,
+      "0.000000000000000001",
+      orderID,
+      1,
+      "umntl",
+      "400000",
+      "block",
+      ""
+    );
+    console.log(res);
+  }
+
+
 
   return (
     <div className="App">
@@ -471,10 +551,10 @@ const[displaydescription,setdisplaydiscription]=useState('');
         </button>
         <br></br>
         <div className="input">
-        <input type="text" class="form-control" placeholder="NFT name" name="text" onChange={handleName} value={name} />
-        <input type="text" class="form-control" placeholder="NFT image link" name="text" onChange={handleUri} value={uri} />
-        <input type="text" class="form-control" placeholder="NFT Category" name="text" onChange={handleCategory} value={category} />
-        <input type="text" class="form-control" placeholder="NFT Description" name="text" onChange={handleDescription} value={description} />
+          <input type="text" class="form-control" placeholder="NFT name" name="text" onChange={handleName} value={name} />
+          <input type="text" class="form-control" placeholder="NFT image link" name="text" onChange={handleUri} value={uri} />
+          <input type="text" class="form-control" placeholder="NFT Category" name="text" onChange={handleCategory} value={category} />
+          <input type="text" class="form-control" placeholder="NFT Description" name="text" onChange={handleDescription} value={description} />
         </div>
         <button className="button" onClick={() => handleMintAsset(assetClassificationID)}>
           Mint Asset
@@ -495,12 +575,12 @@ const[displaydescription,setdisplaydiscription]=useState('');
         <input type="text" class="form-control" placeholder="NFT Description hash" name="text" onChange={handleDescriptionHash} value={descriptionhash} />
         </div> */}
         <button className="button" onClick={handleshowNFT}>
-          Fetch Asset 
+          Fetch Asset
         </button>
         <div>
           {displayname}
         </div>
-        <img src ={displayuri}>
+        <img src={displayuri}>
         </img>
         <div>
           {displaydescription}
@@ -517,6 +597,16 @@ const[displaydescription,setdisplaydiscription]=useState('');
           Provision Id
         </button> */}
         <br></br>
+        <button className="button" onClick={() => handleDefineOrder()}>
+          Define Order
+        </button>
+        <button className="button" onClick={() => handleMakeOrder()}>
+          Make Order
+        </button>
+        <button className="button" onClick={() => handleTakeOrder()}>
+          Take Order
+        </button>
+
       </header>
     </div>
   );
