@@ -162,10 +162,10 @@ function App() {
 
   //Immutable properties of the asset for Defining
   let assetImmutables = "burn:H|";
-  let assetMetaImmutables = "URI:S|";
+  let assetMetaImmutables = "AssetURI:S|";
   //Immutable Properties for the asset for Setting
-  let stringAssetImmutables = "Name of the asset"; // change this value if you are going to re-run mintAsset() to create a new nft
-  let stringAssetMetaImmutables = "Link for the image of NFT"; // change this value if you are going to re-run mintAsset() to create a new nft
+  let stringAssetImmutables = "40000000"; // change this value if you are going to re-run mintAsset() to create a new nft
+  let stringAssetMetaImmutables = "Link"; // change this value if you are going to re-run mintAsset() to create a new nft
 
   // Mutable properties of the asset for Defining
   let assetMutables = "traitMutableasset48:S|string7258";
@@ -188,7 +188,7 @@ function App() {
 
   // after doing mintAsset, search in the REST api (/xprt/assets/assets/all) for a specific classification ID of asset to find the assets's HashID
 
-  let assetHashID = "FDaquiEmcZ1_QNh8Y6Hi99h1RPw=";
+  let assetHashID = "cXA8mJKPfbssK-PgvoiRlyIiqR0=";
   let generatedAsset = assetClassificationID + "|" + assetHashID;
 
   // routine to generate Identity ID from username
@@ -329,17 +329,18 @@ function App() {
   const handleDefineAsset = async (definerIdentity) => {
     let wallet = await createWallet(userGivenMnemonic, "");
     console.log("Identity ID of Definer: ", definerIdentity);
+    let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
 
     // execute define asset transaction
     let res = await assetDefine.define(
       wallet.address,
       config.chain_id,
       userGivenMnemonic,
-      definerIdentity,
+      identityID2,
       assetMutables,
       assetImmutables,
       assetMetaMutables,
-      `URI:S|,Name:S|,description:S|,category:S|`,
+      assetMetaImmutables,
       1,
       "umntl",
       "400000",
@@ -361,22 +362,21 @@ function App() {
     const category64 = utf8.encode(category);
     const desc64 = utf8.encode(description);
 
+
     let wallet = await createWallet(userGivenMnemonic, "");
-    let identityID1 = "devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|0K-zQ2oI674TchrKWPyM2HJmyh8=";
+    let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
 
     let res = await assetMint.mint(
-      "mantle18zl8un2n9jh79w8yc9k83cmykhu90yhknjqrfe",
+      wallet.address,
       config.chain_id,
       userGivenMnemonic,
-      identityID1,// From ID
-      identityID1,// To id
-      assetClassificationID,
-      assetMutables,
-      assetImmutables,
-      assetMetaMutables,
-      `URI:S|${base64.encode(imageURL64)},Name:S|${base64.encode(
-        name64
-      )},description:S|${base64.encode(desc64)},category:S|${base64.encode(category64)}`,
+      identityID2,// From ID
+      identityID2,// To id
+      "devnet-mantle-1.RMHP5SdHOyF8WJ6KSveh3j04Fws=",
+      assetMutables + stringAssetMutables,
+      assetImmutables + stringAssetImmutables,
+      assetMetaMutables + stringAssetMetaMutables,
+      assetMetaImmutables + stringAssetMetaImmutables,
       1,
       "umntl",
       "400000",
@@ -437,7 +437,7 @@ function App() {
       assetMutables,
       assetImmutables,
       mutableMetaProperties,
-      `URI:S|,Name315:S|,description:S|,category:S|`,
+      `Assetcategory:S|`,
       1,
       "umntl",
       "400000",
@@ -451,24 +451,26 @@ function App() {
   const handleMakeOrder = async () => {
     let wallet = await createWallet(userGivenMnemonic, "");
     let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
-    let orderCls = 'devnet-mantle-1.8g1LTC4p-JcgphW3mF3RZOWpHUo='
+    let orderCls = 'devnet-mantle-1.67egVu-Er0Rq7nVwyDN7KDoY4Lg='
+    let mutableMetaProperties =
+      "exchangeRate:D|1,makerOwnableSplit:D|0.000000000000000001,expiry:H|1000000,takerID:I|ID";
     let res = await orderMake.make(
       wallet.address,
       config.chain_id,
       userGivenMnemonic,
       identityID2,
       orderCls,
+      'devnet-mantle-1.RMHP5SdHOyF8WJ6KSveh3j04Fws=|Vy22_AAIQHlIEOemEXfqyFX1nXk=',
       'umntl',
-      'umntl',
-      "100000",
-      "0.000000000000000001",
-      assetMutables,
-      assetImmutables,
-      "exchangeRate:D|1",
-      `URI:S|,Name315:S|,description:S|,category:S|`,
+      "4047054",
+      "0.000001",
+      assetMutables + stringAssetMutables,
+      assetImmutables + stringAssetImmutables,
+      mutableMetaProperties,
+      `Assetcategory:S|anything`,
       1,
       "umntl",
-      "400000",
+      "800000",
       "block",
       ""
     );
