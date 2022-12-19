@@ -67,6 +67,7 @@ function App() {
   const [descriptionhash, setdescriptionhash] = useState('');
 
 
+  
   const handleChange = event => {
     setUsername(event.target.value);
 
@@ -209,6 +210,9 @@ function App() {
 
   const handleCreateNubID = async (username) => {
     let wallet = await createWallet(userGivenMnemonic, "");
+    let wallet1 = await createRandomWallet(userGivenMnemonic, "");
+  console.log(wallet1.address);
+  console.log(wallet1.mnemonic);
     console.log("username: ", username);
 
     let res = await identityNub.nub(
@@ -451,7 +455,7 @@ function App() {
   const handleMakeOrder = async () => {
     let wallet = await createWallet(userGivenMnemonic, "");
     let identityID2 = 'devnet-mantle-1.cGn3HMW8M3t5gMDv-wXa9sseHnA=|HPZA2OsNSgAMQcBOe2XL1e9bR1I='
-    let orderCls = 'devnet-mantle-1.67egVu-Er0Rq7nVwyDN7KDoY4Lg='
+    let orderCls = 'devnet-mantle-1.8g1LTC4p-JcgphW3mF3RZOWpHUo='
     let mutableMetaProperties =
       "exchangeRate:D|1,makerOwnableSplit:D|0.000000000000000001,expiry:H|1000000,takerID:I|ID";
     let res = await orderMake.make(
@@ -462,12 +466,13 @@ function App() {
       orderCls,
       'devnet-mantle-1.RMHP5SdHOyF8WJ6KSveh3j04Fws=|Vy22_AAIQHlIEOemEXfqyFX1nXk=',
       'umntl',
-      "4047054",
-      "0.000001",
-      assetMutables + stringAssetMutables,
-      assetImmutables + stringAssetImmutables,
-      mutableMetaProperties,
-      `Assetcategory:S|anything`,
+      'umntl',
+      "100000",
+      "0.000000000000000001",
+      assetMutables,
+      assetImmutables,
+      "exchangeRate:D|1",
+      `URI:S|,Name315:S|,description:S|,category:S|`,
       1,
       "umntl",
       "800000",
